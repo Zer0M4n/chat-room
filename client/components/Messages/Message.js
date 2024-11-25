@@ -2,7 +2,6 @@ const Message = ({ content, type, own, user }) => {
   if (!user || !user.name) {
     return null; // O muestra un mensaje de error o un componente de carga
   }
-
   return (
     <p className={`message px-1 md:px-6 py-1 flex ${own ? "justify-end" : "justify-start"}`}>
       {!own && (

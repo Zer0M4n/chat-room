@@ -1,9 +1,9 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Chat, Inputs, SignUp } from "@/components";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:3001");
+const socket = io("http://localhost:3002");
 
 export default function Home() {
   const [chat, setChat] = useState([]);
@@ -11,14 +11,16 @@ export default function Home() {
   const [input, setInput] = useState("");
   const [room, setRoom] = useState("");
   const [username, setUsername] = useState("");
+  const [TypeMsg, setTypeMsg] = useState("");
+
 
   const user = useRef(null);
 
   useEffect(() => {
     socket.on("recieve_message", (data) => {
       if (!user.current) return;
-      setChat((prev) => [...prev, { content: data.msg, user: { name: data.user } }]);
-      console.log(data);
+      setChat((prev) => [...prev, { content: data.msg, user: { name: data.user }, type: data.type }]);
+      console.log(data.type);
     });
 
     socket.on("user_typing", (data) => {
@@ -54,7 +56,7 @@ export default function Home() {
       
         {user.current ? (
           <>
-            <Chat chat={chat} user={user} typing={typing} />
+            <Chat chat={chat} user={user} typing={typing} type={TypeMsg}/>
             <Inputs setChat={setChat} user={user} socket={socket} room={room} />
           </>
         ) : (

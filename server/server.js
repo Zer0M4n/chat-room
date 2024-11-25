@@ -9,7 +9,7 @@ const { Server } = require('socket.io');
 const io = new Server(server, {
   cors: {
     origin: '*',
-  },
+  }, 
 });
 
 io.on('connection', (socket) => {
@@ -22,9 +22,9 @@ io.on('connection', (socket) => {
   });
 
   socket.on("send_message", (data) => {
-    const { room, msg, user } = data;
-    io.to(room).emit("recieve_message", { msg, user });
-    console.log(`Message from ${user} in room ${room}: ${msg}`);
+    const { room, msg, user, type } = data;
+    io.to(room).emit("recieve_message", { msg, user, type });
+    console.log(`Message from ${user} in room ${room}: ${msg} (type: ${type})`);
   });
 
   socket.on("user_typing", (data) => {
@@ -37,6 +37,6 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(3001, () => {
-  console.log('listening on *:3001');
+server.listen(3002, () => {
+  console.log('listening on *:300');
 });
