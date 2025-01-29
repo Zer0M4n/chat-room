@@ -14,26 +14,28 @@ const SignUp = ({ user, socket, setUser, setRoom }) => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
-      <div className="text-center grid grid-rows-3 gap-2 p-8 rounded-md bg-slate-700">
-        <h1 className="text-6xl font-bold text-white">Chat App</h1>
-        <h2 className="text-2xl text-white">Enter your name and room to join</h2>
+    <div className="w-full h-full flex items-center justify-center">
+      <div className="text-center grid grid-rows-3 gap-4 p-6 rounded-lg shadow-lg bg-white max-w-sm w-full">
+        <h1 className="text-3xl font-extrabold text-gray-800">Chat App</h1>
+        <h2 className="text-lg text-gray-600">Enter your name and room to join</h2>
         <input
           type="text"
-          className="text-2xl text-center rounded-md p-2 my-2 text-slate-950 placeholder-slate-500 focus:outline-none"
+          className="text-lg text-center rounded-md p-3 my-2 text-gray-800 placeholder-gray-400 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="text"
-          className="text-2xl text-center rounded-md p-2 my-2 text-slate-950 placeholder-slate-500 focus:outline-none"
+          className="text-lg text-center rounded-md p-3 my-2 text-gray-800 placeholder-gray-400 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Room Name"
           value={roomName}
           onChange={(e) => setRoomName(e.target.value)}
         />
         <button
-          className={`text-xl w-full text-white font-bold py-2 px-3 rounded-md ${username && roomName ? "bg-gray-600" : "bg-slate-400"}`}
+          className={`text-lg w-full text-white font-bold py-3 px-4 rounded-md transition-colors duration-300 ${
+            username && roomName ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400 cursor-not-allowed"
+          }`}
           disabled={!username || !roomName}
           onClick={addUser}
         >

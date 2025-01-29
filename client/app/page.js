@@ -13,17 +13,19 @@ export default function Home() {
   const [username, setUsername] = useState("");
   const [TypeMsg, setTypeMsg] = useState("");
 
-
   const user = useRef(null);
 
   useEffect(() => {
-    socket.on("recieve_message", (data) => {
+    const handleReceiveMessage = (data) => {
       if (!user.current) return;
-      setChat((prev) => [...prev, { content: data.msg, user: { name: data.user }, type: data.type }]);
+      setChat((prev) => [
+        ...prev,
+        { content: data.msg, user: { name: data.user }, type: data.type },
+      ]);
       console.log(data.type);
-    });
+    };
 
-    socket.on("user_typing", (data) => {
+    const handleUserTyping = (data) => {
       if (!user.current) return;
       setTyping((prev) => {
         if (typing.includes(data.user) && data.typing === true) return prev;
@@ -33,41 +35,39 @@ export default function Home() {
           return [...prev, data.user];
         }
       });
-    });
+    };
 
-    socket.on("new_user", (newUser) => {
+    const handleNewUser = (newUser) => {
       if (!user.current) return;
       setChat((prev) => [
         ...prev,
         { content: `${newUser} joined`, type: "server", user: { name: "System" } },
       ]);
-    });
+    };
+
+    socket.on("recieve_message", handleReceiveMessage);
+    socket.on("user_typing", handleUserTyping);
+    socket.on("new_user", handleNewUser);
 
     return () => {
-      socket.off("recieve_message");
-      socket.off("user_typing");
-      socket.off("new_user");
+      socket.off("recieve_message", handleReceiveMessage);
+      socket.off("user_typing", handleUserTyping);
+      socket.off("new_user", handleNewUser);
     };
   }, [typing]);
 
   return (
-    <main className="h-screen max-h-screeen max-w-screen mx-auto md:container md:p-20 md:pt-4
-     bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]">
-      
+    <main className="h-screen w-screen flex items-center justify-center bg-gradient-to-r from-purple-500 to-indigo-500">
+      <div className="w-full h-full max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
         {user.current ? (
-          <>
-            <Chat chat={chat} user={user} typing={typing} type={TypeMsg}/>
+          <div className="flex flex-col h-full">
+            <Chat chat={chat} user={user} typing={typing} type={TypeMsg} />
             <Inputs setChat={setChat} user={user} socket={socket} room={room} />
-          </>
+          </div>
         ) : (
-          <SignUp
-            user={user}
-            socket={socket}
-            setUser={setUsername}
-            setRoom={setRoom}
-          />
+          <SignUp user={user} socket={socket} setUser={setUsername} setRoom={setRoom} />
         )}
-      
+      </div>
     </main>
   );
 }

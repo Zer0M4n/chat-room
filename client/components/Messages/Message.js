@@ -3,25 +3,25 @@ const Message = ({ content, type, own, user }) => {
     return null; // O muestra un mensaje de error o un componente de carga
   }
   return (
-    <p className={`message px-1 md:px-6 py-1 flex ${own ? "justify-end" : "justify-start"}`}>
+    <div className={`message-container flex ${own ? "justify-end" : "justify-start"} my-2`}>
       {!own && (
-        <span className={`logo text-2xl bg-slate-50 text-black rounded-full py-2 text-center px-4 mr-2 flex items-center 
-          ${type === "text" ? "my-auto" : "max-h-12"}`}>
+        <div className="avatar bg-blue-500 text-white rounded-full flex items-center justify-center w-10 h-10 mr-3">
           {user.name.charAt(0).toUpperCase()}
-        </span>
+        </div>
       )}
-      <span className={`text-xl md:text-3xl py-2 rounded-2xl 
-        ${type === "text" ? "px-6" : "px-2"}
-        ${own ? "bg-slate-400 text-white" : " bg-slate-300"}`}>
-        {type === "text" ? content : <img src={content} className="rounded-md" alt="image" />}
-      </span>
+      <div className={`message-content max-w-xs md:max-w-md p-4 rounded-lg shadow-lg ${own ? "bg-blue-500 text-white" : "bg-gray-200 text-black"}`}>
+        {type === "text" ? (
+          <p className="text-lg md:text-xl">{content}</p>
+        ) : (
+          <img src={content} className="rounded-md" alt="image" />
+        )}
+      </div>
       {own && (
-        <span className={`logo text-2xl bg-slate-50 text-black rounded-full py-2 text-center px-4 ml-2 flex items-center 
-          ${type === "text" ? "my-auto" : "max-h-12"}`}>
+        <div className="avatar bg-blue-500 text-white rounded-full flex items-center justify-center w-10 h-10 ml-3">
           {user.name.charAt(0).toUpperCase()}
-        </span>
+        </div>
       )}
-    </p>
+    </div>
   );
 };
 
